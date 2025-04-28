@@ -53,7 +53,7 @@ static const char openocd_startup_tcl[] = {
 /* Give scripts and TELNET a way to find out what version this is */
 COMMAND_HANDLER(handler_version_command)
 {
-	char *version_str = OPENOCD_VERSION;
+	/* char *version_str = OPENOCD_VERSION;
 
 	if (CMD_ARGC > 1)
 		return ERROR_COMMAND_SYNTAX_ERROR;
@@ -65,7 +65,7 @@ COMMAND_HANDLER(handler_version_command)
 		version_str = GITVERSION;
 	}
 
-	command_print(CMD, "%s", version_str);
+	command_print(CMD, "%s", version_str); */
 
 	return ERROR_OK;
 }
@@ -266,8 +266,8 @@ static struct command_context *setup_command_handler(Jim_Interp *interp)
 	}
 	LOG_DEBUG("command registration: complete");
 
-	LOG_OUTPUT(OPENOCD_VERSION "\n"
-		"Licensed under GNU GPL v2\n");
+	// LOG_OUTPUT(OPENOCD_VERSION "\n"
+	// 	"Licensed under GNU GPL v2\n");
 
 	global_cmd_ctx = cmd_ctx;
 

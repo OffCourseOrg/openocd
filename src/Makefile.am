@@ -1,7 +1,20 @@
 # SPDX-License-Identifier: GPL-2.0-or-later
 
 noinst_LTLIBRARIES += %D%/libopenocd.la
+
+if EMSCRIPTEN_OBJECT
+# %D%/main.o: $(%C%_openocd_SOURCES) 
+# 	$(CC) -c -o %D%/main.o $(openocd_CFLAGS) $(%C%_openocd_SOURCES) $(%C%_openocd_LDADD) $(%C%_libopenocd_la_SOURCES)
+noinst_LIBRARIES = libopenocd.a
+
+libopenocd_a_SOURCES = \
+    %D%/main.c \
+    %D%/hello.c \
+    %D%/openocd.c
+
+else
 bin_PROGRAMS += %D%/openocd
+endif
 
 %C%_openocd_SOURCES = \
 	%D%/main.c

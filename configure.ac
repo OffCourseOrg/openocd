@@ -264,6 +264,14 @@ AC_ARG_ENABLE([verbose_usb_comms],
       [Enable verbose USB communication messages (for debugging)]),
   [debug_usb_comms=$enableval], [])
 
+AC_ARG_ENABLE([emscripten-object],
+  AS_HELP_STRING([--enable-emscripten-object],
+    [Compile OpenOCD to a relocatable .o wasm file instead of final wasm]),
+  [emscripten_object=$enableval],
+  [emscripten_object=no]
+)
+
+AM_CONDITIONAL([EMSCRIPTEN_OBJECT], [test "x$emscripten_object" = "xyes"])
 AC_MSG_CHECKING([whether to enable verbose USB I/O messages]);
 AC_MSG_RESULT([$debug_usb_io])
 AS_IF([test "x$debug_usb_io" = "xyes"], [

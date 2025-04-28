@@ -10,6 +10,7 @@
 *.lo
 *.la
 *.in
+build/
 
 # coverage files (gcov)
 *.gcda
@@ -114,3 +115,12 @@ GTAGS
 # A compile_commands.json can be generated using bear and will help tools such
 # as clangd to locate header files and use correct $CFLAGS
 compile_commands.json
+
+
+#emscripten files
+a.out
+a.wasm
+openocd.html
+openocd.js
+openocd.wasm
+src/index.html
