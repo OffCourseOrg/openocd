@@ -2,18 +2,17 @@
 
 set -xe
 
-# build_dir=$PWD
-# #
-# for build_file in $(find . -name "build.sh" ! -path "./build.sh"); do
-#   echo executing $build_file
-#   cd $(dirname $build_file)
-#   ./build.sh
-#   cd $build_dir
-# done
-# #
-# #
-./bootstrap
+build_dir=$PWD
 #
+for build_file in $(find . -name "build.sh" ! -path "./build.sh"); do
+  echo executing $build_file
+  cd $(dirname $build_file)
+  ./build.sh
+  cd $build_dir
+done
+
+./bootstrap
+
 export EM_PKG_CONFIG_PATH="./libusb/:./jimtcl"
 
 emconfigure ./configure \
@@ -56,7 +55,7 @@ emconfigure ./configure \
   --host=wasm32-unknown-emscripten \
   --enable-emscripten-object \
    CPPFLAGS="-I./jimtcl/ -I./libusb/libusb/" LDFLAGS="-L./libusb/libusb/.libs/ -L./jimtcl/ -lembind --bind -sASYNCIFY -sALLOW_MEMORY_GROWTH" \
-#
+
 emmake make -j$(nproc)
 
 cp ./src/.libs/libopenocd.a libopenocd.a
