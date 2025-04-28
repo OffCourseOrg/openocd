@@ -11,50 +11,62 @@ for build_file in $(find . -name "build.sh" ! -path "./build.sh"); do
   cd $build_dir
 done
 
-./bootstrap
+if [ -f "./build.sh" ]; then
+  echo "Building from openocd"
+else
+  echo "Build from topdir. Exiting"
+  exit 0
+fi
 
-export EM_PKG_CONFIG_PATH="./libusb/:./jimtcl"
+if [ ! -f "./configure.ac" ] || [ ! -f "./configure" ] || [ ! -f "./Makefile" ] || [ "./bootstrap.sh" -nt "./configure" ] || [ "./bootstrap.sh" -nt "./configure.ac" ] || [ "./configure" -nt "./Makefile" ]; then
+  ./bootstrap
 
-emconfigure ./configure \
-  --enable-ftdi=yes \
-  --enable-stlink=no \
-  --enable-ti-icdi=no \
-  --enable-ulink=no \
-  --enable-angie=no \
-  --enable-usb-blaster-2=no \
-  --enable-ft232r=no \
-  --enable-vsllink=no \
-  --enable-xds110=no \
-  --enable-osbdm=no \
-  --enable-opendous=no \
-  --enable-armjtagew=no \
-  --enable-rlink=no \
-  --enable-usbprog=no \
-  --enable-esp-usb-jtag=no \
-  --enable-cmsis-dap-v2=no \
-  --enable-cmsis-dap=no \
-  --enable-nulink=no \
-  --enable-kitprog=no \
-  --enable-usb-blaster=no \
-  --enable-presto=no \
-  --enable-openjtag=no \
-  --enable-linuxgpiod=no \
-  --enable-remote-bitbang=no \
-  --enable-linuxspidev=no \
-  --enable-buspirate=no \
-  --enable-dummy=no \
-  --enable-vdebug=no \
-  --enable-jtag-dpi=no \
-  --enable-jtag-vpi=no \
-  --enable-rshim=no \
-  --enable-xlnx-pcie-xvc=no \
-  --enable-jlink=no \
-  --with-capstone=no \
-  --disable-assert \
-  --disable-werror \
-  --host=wasm32-unknown-emscripten \
-  --enable-emscripten-object \
-   CPPFLAGS="-I./jimtcl/ -I./libusb/libusb/" LDFLAGS="-L./libusb/libusb/.libs/ -L./jimtcl/ -lembind --bind -sASYNCIFY -sALLOW_MEMORY_GROWTH" \
+  export EM_PKG_CONFIG_PATH="./libusb/:./jimtcl"
+
+  emconfigure ./configure \
+    --enable-ftdi=yes \
+    --enable-stlink=no \
+    --enable-ti-icdi=no \
+    --enable-ulink=no \
+    --enable-angie=no \
+    --enable-usb-blaster-2=no \
+    --enable-ft232r=no \
+    --enable-vsllink=no \
+    --enable-xds110=no \
+    --enable-osbdm=no \
+    --enable-opendous=no \
+    --enable-armjtagew=no \
+    --enable-rlink=no \
+    --enable-usbprog=no \
+    --enable-esp-usb-jtag=no \
+    --enable-cmsis-dap-v2=no \
+    --enable-cmsis-dap=no \
+    --enable-nulink=no \
+    --enable-kitprog=no \
+    --enable-usb-blaster=no \
+    --enable-presto=no \
+    --enable-openjtag=no \
+    --enable-linuxgpiod=no \
+    --enable-remote-bitbang=no \
+    --enable-linuxspidev=no \
+    --enable-buspirate=no \
+    --enable-dummy=no \
+    --enable-vdebug=no \
+    --enable-jtag-dpi=no \
+    --enable-jtag-vpi=no \
+    --enable-rshim=no \
+    --enable-xlnx-pcie-xvc=no \
+    --enable-jlink=no \
+    --with-capstone=no \
+    --disable-assert \
+    --disable-werror \
+    --host=wasm32-unknown-emscripten \
+    --enable-emscripten-object \
+     CPPFLAGS="-I./jimtcl/ -I./libusb/libusb/" LDFLAGS="-L./libusb/libusb/.libs/ -L./jimtcl/ -lembind --bind -sASYNCIFY -sALLOW_MEMORY_GROWTH" 
+
+else
+  echo Do not reconfigure
+fi
 
 emmake make -j$(nproc)
 
